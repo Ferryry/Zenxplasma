@@ -1,0 +1,16 @@
+.dub
+docs.json
+__dummy.html
+docs/
+/zenxplasma
+zenxplasma.so
+zenxplasma.dylib
+zenxplasma.dll
+zenxplasma.a
+zenxplasma.lib
+zenxplasma-test-*
+*.exe
+*.pdb
+*.o
+*.obj
+*.lst
