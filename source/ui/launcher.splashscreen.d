@@ -2,7 +2,6 @@ module zenxplasma.splashscreen;
 
 import std.digest;
 import std.stdio;
-import core.thread;
 import dlangui;
 
 class Splash
@@ -46,50 +45,38 @@ class Splash
                         fontFace: "ubuntu"
                         id: subheaderText
                     }
-                    HorizontalLayout {
-                        TextWidget {
-                            text: "Loading..."
-                            textColor: white
-                            fontSize: 16pt
-                            fontFace: "ubuntu"
-                            id: loadingText
-                        }
-                        ImageWidget {
-                            minWidth: 64pt
-                            minHeight: 64pt
-                            id: loadingImage
-                        }
-                        TextWidget {
-                            text: "Copyright © 2024, Ferryry"
-                            textColor: white
-                            fontSize: 8pt
-                            fontFace: "ubuntu"
-                            id: copyrightText
-                        }
+                    TextWidget {
+                        text: "Loading..."
+                        textColor: white
+                        fontSize: 16pt
+                        fontFace: "ubuntu"
+                        id: loadingText
+                    }
+                    TextWidget {
+                        text: "Copyright © 2024, Ferryry"
+                        textColor: white
+                        fontSize: 8pt
+                        fontFace: "ubuntu"
+                        id: copyrightText
                     }
                 }
             }
         });
 
-        /*window.mainWidget.childById("headerText").margins(Rect(32, 32, 0, 0));
+        window.mainWidget.childById("headerText").margins(Rect(32, 32, 0, 0));
         window.mainWidget.childById("subheaderText").margins(Rect(32, 0, 0, 0));
         window.mainWidget.childById("loadingText").margins(Rect(880, 260, 0, 0));
-        window.mainWidget.childById("copyrightText").margins(Rect(8, 8, 0, 0));*/
+        window.mainWidget.childById("copyrightText").margins(Rect(8, 8, 0, 0));
 
-        window.mainWidget.backgroundDrawable = drawableCache.get("background_splash.tiled");
-        ImageWidget image = cast(ImageWidget) window.mainWidget.childById("loadingImage");
-        image.drawable = drawableCache.get("background_splash_loading");
+        window.mainWidget.backgroundDrawable = drawableCache.get("background.splash.tiled");
     }
 
-    private void loadingAnimation()
+    private void loadingAnimation(long sleepduration)
     {
         import core.thread : Thread, dur;
 
-        long sleepduration = 1000;
-
-        TextWidget loading = cast(TextWidget) window.mainWidget.childById("loadingText");
-
-        while (true)
+        TextWidget loading = cast(TextWidget)window.mainWidget.childById("loadingText");
+        while ( true )
         {
             loading.text = "Loading.";
             Thread.sleep(dur!("msecs")(sleepduration));
@@ -105,7 +92,11 @@ class Splash
         if (window !is null)
             window.show();
 
-        auto thread = new Thread(&loadingAnimation).start();
+        import dawait : startScheduler;
+
+        startScheduler({
+            loadingAnimation(100);
+        });
     }
 
     public void destroy()
