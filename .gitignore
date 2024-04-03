@@ -1,5 +1,7 @@
 .dub
 .vs
+ui.log
+build/
 docs.json
 __dummy.html
 docs/
